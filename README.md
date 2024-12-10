@@ -34,3 +34,91 @@ testScope();
 
 # Hoisting
 Поднятие или hoisting — это механизм в JavaScript, в котором переменные и объявления функций, передвигаются вверх своей области видимости перед тем, как код будет выполнен.
+при создании переменной **var** в JavaScript, она инициализируются со значением undefined , let -> uninitialized
+Запомните и держите в уме одну важную деталь, **JavaScript непреклонно сначала объявляет, а уже затем инициализирует наши переменные.**
+**все необъявленные переменные это по факту глобальные переменные. a = 20**
+```
+console.log(a); // undefined
+
+var a = 20;
+```
+```
+console.log(a); // Reference Error
+
+let a = 20;
+```
+```
+console.log(a); // Reference Error
+
+const a = 20;
+```
+## Создание глобального свойства объекта
+На верхнем уровне , ``let`` в отличие от ``var``, не создает свойство глобального объекта:
+```
+var foo = "Foo";  // globally scoped
+let bar = "Bar"; // not allowed to be globally scoped
+
+console.log(window.foo); // Foo
+console.log(window.bar); // undefined
+```
+### Redeclaration
+В строгом режиме ``var`` позволит вам повторно объявить одну и ту же переменную в той же области, в то время как ``let`` вызывает ``SyntaxError``.
+```
+var a;
+var a; // Works fine.
+
+let b;
+let b; // SyntaxError: Identifier 'b' has already been declared
+
+var c;
+let c; // SyntaxError: Identifier 'c' has already been declared
+```
+# Temporal Dead Zone
+Из-за временной мертвой зоны переменные, объявленные с помощью, ``let , const`` не могут быть доступны до их объявления. Попытка сделать это выдает ошибку.
+```
+console.log(noTDZ); // undefined
+var noTDZ = 43;
+console.log(hasTDZ); // ReferenceError: hasTDZ is not defined
+let hasTDZ = 42;
+console.log(hasTDZ); // ReferenceError: hasTDZ is not defined
+const hasTDZ = 42;
+```
+``const``
+``const`` очень похож на ``let`` — он блочный и имеет TDZ. Однако есть две вещи, которые отличаются друг от друга.
+**Нет повторного назначения**
+Переменная, объявленная с помощью, constне может быть переназначена.
+
+```
+const a = 42;
+a = 43; // TypeError: Assignment to constant variable.
+```
+Обратите внимание, что это не означает, что значение неизменно. Его свойства по-прежнему можно изменить.
+
+```
+const obj = {};
+obj.a = 42;
+console.log(obj.a); // 42
+```
+Если вы хотите иметь неизменяемый объект, вы должны использовать `` Object.freeze().``
+```
+const obj = Object.freeze({a: 40});
+obj.a = 42;
+console.log(obj.a); // 40
+console.log(obj.b); // undefined
+```
+**Требуется инициализатор**
+Вы всегда должны указывать значение при объявлении переменной с помощью ``const.``
+```
+const a; // SyntaxError: Missing initializer in const declaratio
+```
+
+
+
+
+
+
+
+
+
+
+
